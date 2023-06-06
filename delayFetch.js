@@ -6,7 +6,8 @@ function testfunc(time) {
 
 }
 class Queue {
-    constructor() {
+    constructor(time) {
+        this.timeLimit = time
         this.taskList = []
     }
     add(fn, cb) {
@@ -16,21 +17,21 @@ class Queue {
 
     }
     generageDelayFunc(fn, cb) {
-        return function () {
+        return () => {
             let time = Date.now()
             let res = undefined
             // 请求成功再赋值
-            const promise = fn().then(val => {
+            fn().then(val => {
                 res = val
             })
             return new Promise((resolve, reject) => {
-                // 轮询到3s, 有值就反回，否则抛出错误
                 const timer = setInterval(async () => {
-                    if (Date.now() - time >= 3000) {
+                    // 超出时间就结束掉请求
+                    if (Date.now() - time >= this.timeLimit) {
                         clearInterval(timer)
                         if (res) {
-                            cb(res),
-                                resolve()
+                            cb(res);
+                            resolve(true)
                         } else {
                             reject(new Error('time out'))
 
@@ -44,14 +45,14 @@ class Queue {
     }
     async start() {
         while (this.taskList.length) {
-            await this.taskList.shift()()
+            await this.taskList.shift()();
         }
     }
 }
 
-new Queue()
+new Queue(4000)
     .add(testfunc.bind(null, 1000), (res) => { console.log(res) })
-    .add(testfunc.bind(null, 2000), (res) => { console.log(res) })
+    .add(testfunc.bind(null, 1100), (res) => { console.log(res) })
     .add(testfunc.bind(null, 3000), (res) => { console.log(res) })
     .add(testfunc.bind(null, 4000), (res) => { console.log(res) })
     .start()
