@@ -1,3 +1,5 @@
+// 同步请求队列，并且支持超时自动取消；
+
 function testfunc(time) {
     // 构造一个假的请求
     return new Promise((resolve) => {
@@ -23,6 +25,7 @@ class Queue {
             // 请求成功再赋值
             fn().then(val => {
                 res = val
+
             })
             return new Promise((resolve, reject) => {
                 const timer = setInterval(async () => {
@@ -40,6 +43,7 @@ class Queue {
                     }
                 }, 1000)
             })
+
         }
 
     }
@@ -50,7 +54,7 @@ class Queue {
     }
 }
 
-new Queue(4000)
+new Queue(3000)
     .add(testfunc.bind(null, 1000), (res) => { console.log(res) })
     .add(testfunc.bind(null, 1100), (res) => { console.log(res) })
     .add(testfunc.bind(null, 3000), (res) => { console.log(res) })
