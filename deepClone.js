@@ -1,3 +1,5 @@
+// @description:
+//  paradigm:https://segmentfault.com/a/1190000016672263
 let a = { a: 'a', b: { c: 'c' }, d: [1, { zj: 'zj' }, 3], date: new Date() }
 function deepClone(obj) {
   if (!obj) {
@@ -10,13 +12,15 @@ function deepClone(obj) {
       res[key] = new Date(value - 0)
     }
     if (typeof value === 'object') {
-      if (Array.isArray(value)) {
-        // 数组处理
-        res[key] = deepClone(value)
-      } else {
-        // 递归处理
-        res[key] = deepClone(value)
-      }
+      // if (Array.isArray(value)) {
+      //   // 数组处理
+      //   res[key] = deepClone(value)
+      // } else {
+      //   // 递归处理
+      //   res[key] = deepClone(value)
+      // }
+      res[key] = deepClone(value)
+
     } else {
       res[key] = value
     }
