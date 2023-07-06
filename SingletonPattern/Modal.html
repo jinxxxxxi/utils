@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.05);
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="button">modal</button>
+
+    <script>
+        const $button = document.getElementById('button');
+        let modal = null
+
+
+
+        class ModalBase {
+            constructor(options) {
+                this.options = options;
+                this.init()
+            }
+
+            modal = null;
+            init() {
+                let modalWrapper = this.createModalWrapper();
+                let modalContent = document.createElement('div')
+                modalWrapper.appendChild(modalContent)
+                modalContent.innerHTML = this.options.text || 'no content';
+                this.modal = modalWrapper;
+                this.bindEvents()
+            }
+
+            bindEvents() {
+                this.closeOnBg()
+            }
+
+
+            createModalWrapper() {
+                let modalWrapper = document.createElement('div');
+                modalWrapper.className = 'modal'
+                modalWrapper.style.display = 'none'
+                document.body.appendChild(modalWrapper);
+                return modalWrapper;
+            }
+
+            closeOnBg() {
+                this.modal.addEventListener('click', () => {
+                    this.modal.style.display = 'none'
+
+                })
+            }
+
+            show() {
+                this.modal.style.display = 'block'
+
+            }
+        }
+
+
+        // 利用闭包实现单例模式
+        const Modal = (function () {
+            let modal = null;
+            return function (text = '') {
+                if (!modal) {
+                    modal = new ModalBase({ text })
+                }
+                return modal
+
+            }
+        })()
+
+
+
+        function initModal() {
+            modal = new Modal('000')
+            // let modal1 = new Modal('111')
+            // modal1===modal => true
+
+
+        }
+        $button.addEventListener('click', () => { modal.show() })
+
+        initModal()
+
+
+
+    </script>
+
+</body>
+
+</html>
