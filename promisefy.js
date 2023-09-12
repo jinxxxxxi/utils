@@ -10,9 +10,7 @@ function promisefy(original) {
             })
             original.apply(this, args);
         })
-
     }
-
 }
 
 const readfileAsync = promisefy(readfile)

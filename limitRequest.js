@@ -1,3 +1,5 @@
+// 并发控制， 对于很多请求时， 要求同时只能请求n个。 结束后一起返回
+
 function limitRequest(urls = [], limit = 5) {
   return new Promise((resolve, reject) => {
     const len = urls.length;
