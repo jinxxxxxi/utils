@@ -22,7 +22,9 @@ class PubSub {
     // 通知
     notify(type) {
       const messages = this.messages[type];
-      const subscribers = this.listeners[type] || [];
+        const subscribers = this.listeners[type] || [];
+        
+        console.log(type,messages,subscribers)
       subscribers.forEach((cb, index) => cb(messages[index]));
     }
 }
@@ -57,17 +59,22 @@ const pubsub = new PubSub();
 const publisherA = new Publisher('publisherA', pubsub);
 publisherA.publish(TYPE_A, 'we are young');
 publisherA.publish(TYPE_B, 'the silicon valley');
+
+
 const publisherB = new Publisher('publisherB', pubsub);
 publisherB.publish(TYPE_A, 'stronger');
+
+
 const publisherC = new Publisher('publisherC', pubsub);
 publisherC.publish(TYPE_C, 'a brief history of time');
 
 const subscriberA = new Subscriber('subscriberA', pubsub);
+
 subscriberA.subscribe(TYPE_A, res => {
   console.log('subscriberA received', res)
 });
 const subscriberB = new Subscriber('subscriberB', pubsub);
-subscriberB.subscribe(TYPE_C, res => {
+subscriberB.subscribe(TYPE_B, res => {
   console.log('subscriberB received', res)
 });
 const subscriberC = new Subscriber('subscriberC', pubsub);
