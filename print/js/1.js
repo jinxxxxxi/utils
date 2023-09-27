@@ -14,7 +14,6 @@ function fun(n, o) {
 
 // 在接下来的三次调用中，都是通过对象 a 调用方法 fun，该方法会递归调用函数 fun，并将对象 a 的属性 n 作为参数(闭包缓存为0), o 传递给函数 fun。因此，无论调用多少次方法 fun，都会输出对象 a 的属性 n 的值，即输出 0。
 var a = fun(0); // undefined
-console.log('jinx',a.n)
   // 这下面的fun 跟上面的没关系，因为有个闭包， 所以还是0
   a.fun(1);  // 0
   a.fun(2); //  0
